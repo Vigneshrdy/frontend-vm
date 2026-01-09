@@ -103,18 +103,33 @@ const Chat = () => {
       setLoading(false);
     }
   };
-
-  return (
-    <div className="p-6 space-y-6">
+return (
+  <div className="flex flex-col h-screen p-6">
+    {/* CHAT MESSAGES */}
+    <div className="flex-1 overflow-y-auto space-y-4 max-w-3xl mx-auto w-full">
       {messages.map((m) => (
-        <div key={m.id}>
-          <b>{m.type === "user" ? "You" : "Nyaya AI"}:</b> {m.content}
+        <div
+          key={m.id}
+          className={`px-4 py-2 rounded-xl max-w-[75%] text-sm leading-relaxed ${
+            m.type === "user"
+              ? "ml-auto bg-primary text-primary-foreground"
+              : "mr-auto bg-secondary text-foreground"
+          }`}
+        >
+          {m.content}
         </div>
       ))}
-
-      <NyayaChatInput onSendMessage={handleSendMessage} disabled={loading} />
     </div>
-  );
+
+    {/* INPUT */}
+    <div className="mt-4">
+      <NyayaChatInput
+        onSendMessage={handleSendMessage}
+        disabled={loading}
+      />
+    </div>
+  </div>
+);
 };
 
 export default Chat;
