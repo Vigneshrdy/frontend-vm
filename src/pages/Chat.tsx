@@ -101,8 +101,8 @@ const Chat = () => {
         const result = await res.json();
         setHasDocument(true);
         updateThinking(result.summary ?? "Document added.");
-      } catch {
-        updateThinking("I could not upload the document. Please try again.");
+      } catch  (err: any){
+       updateThinking(err?.message || "I could not upload the document.");
       } finally {
         setLoading(false);
       }
