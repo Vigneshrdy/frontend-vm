@@ -92,13 +92,16 @@ const Chat = () => {
         formData.append("file", file);
 
         const res = await fetch(`/api/upload?session_id=${sessionId}`, {
-          method: "POST",
-          body: formData,
-        });
+  method: "POST",
+  body: formData,
+});
 
-        if (!res.ok) throw new Error("Upload failed");
+if (!res.ok) {
+  const errorData = await res.json();
+  throw new Error(errorData.detail || "Upload failed");
+}
 
-        const result = await res.json();
+const result = await res.json();
         setHasDocument(true);
         updateThinking(result.summary ?? "Document added.");
       } catch  (err: any){
