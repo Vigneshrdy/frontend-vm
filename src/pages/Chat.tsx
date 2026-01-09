@@ -13,6 +13,7 @@ import {
   Sparkles,
   UploadCloud,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 
 interface Message {
   id: string;
@@ -219,7 +220,23 @@ const Chat = () => {
                                 : "bg-secondary text-secondary-foreground"
                             }`}
                           >
-                            {m.content}
+                            <ReactMarkdown
+  components={{
+    h3: ({ children }) => (
+      <h3 className="text-base font-semibold mt-3 mb-1">{children}</h3>
+    ),
+    ul: ({ children }) => (
+      <ul className="list-disc pl-5 space-y-1">{children}</ul>
+    ),
+    ol: ({ children }) => (
+      <ol className="list-decimal pl-5 space-y-1">{children}</ol>
+    ),
+    li: ({ children }) => <li>{children}</li>,
+    p: ({ children }) => <p className="mb-2">{children}</p>,
+  }}
+>
+  {m.content}
+</ReactMarkdown>
                           </div>
                         </div>
                       ))
