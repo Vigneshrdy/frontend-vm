@@ -18,7 +18,7 @@ const teamMembers: TeamMember[] = [
   {
     name: "Shoaib",
     firstName: "SHOAIB",
-    role: "LEoDING WITH VISION",
+    role: "LEADING WITH VISION",
     description:
       "As Team Lead and Backend Developer, Shoaib drives the Nyaya AI project with expertise in architecture, model finetuning, and RAG implementation. His passion lies in making legal knowledge accessible to everyone through intelligent AI systems.",
     image: shoaibImg,
