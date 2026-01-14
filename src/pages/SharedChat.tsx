@@ -11,7 +11,7 @@ interface SharedMessage {
 }
 
 const SharedChat = () => {
-  const { id } = useParams(); // ✅ correct param
+  const { id } = useParams(); // ✅ MUST match route param
   const [messages, setMessages] = useState<SharedMessage[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -19,16 +19,19 @@ const SharedChat = () => {
   useEffect(() => {
     if (!id) return;
 
-    fetch(`${API_BASE}/api/share/${id}`) // ✅ absolute API
+    fetch(`${API_BASE}/api/share/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Chat not found or expired");
         return res.json();
       })
       .then((data) => {
         setMessages(data.messages || []);
+        setLoading(false);
       })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
   }, [id]);
 
   return (
@@ -48,25 +51,26 @@ const SharedChat = () => {
           <div className="text-sm text-red-500 text-center">{error}</div>
         )}
 
-        {messages.map((m, i) => (
-          <div key={i} className="space-y-3">
-            {m.question && (
-              <div className="flex justify-end">
-                <div className="max-w-[80%] rounded-2xl px-4 py-3 text-sm bg-primary text-primary-foreground">
-                  <ReactMarkdown>{m.question}</ReactMarkdown>
+        {!loading &&
+          messages.map((m, i) => (
+            <div key={i} className="space-y-3">
+              {m.question && (
+                <div className="flex justify-end">
+                  <div className="max-w-[80%] rounded-2xl px-4 py-3 text-sm bg-primary text-primary-foreground">
+                    <ReactMarkdown>{m.question}</ReactMarkdown>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {m.answer && (
-              <div className="flex justify-start">
-                <div className="max-w-[80%] rounded-2xl px-4 py-3 text-sm bg-secondary text-secondary-foreground">
-                  <ReactMarkdown>{m.answer}</ReactMarkdown>
+              {m.answer && (
+                <div className="flex justify-start">
+                  <div className="max-w-[80%] rounded-2xl px-4 py-3 text-sm bg-secondary text-secondary-foreground">
+                    <ReactMarkdown>{m.answer}</ReactMarkdown>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        ))}
+              )}
+            </div>
+          ))}
 
         <p className="text-xs text-muted-foreground text-center mt-6">
           Read-only shared chat · Nyaya AI
