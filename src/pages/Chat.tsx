@@ -42,23 +42,9 @@ const quickPrompts = [
   "What happens after an FIR is filed in India?",
   "Summarize this judgment and list action items",
 ];
-const handleShare = async () => {
-  const res = await fetch("/api/share-chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ session_id: sessionId }),
-  });
 
-  if (!res.ok) {
-    alert("Failed to generate share link");
-    return;
-  }
 
-  const data = await res.json();
-  await navigator.clipboard.writeText(data.share_url);
-
-  alert("Share link copied to clipboard");
-};
+  
 
 const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([starterMessage]);
@@ -74,6 +60,7 @@ const Chat = () => {
     }
   }, [messages]);
 
+  
   const updateThinking = (content: string) => {
     setMessages((prev) =>
       prev.map((m) =>
@@ -173,7 +160,28 @@ const result = await res.json();
     setMessages([starterMessage]);
     setHasDocument(false);
   };
+  const handleShare = async () => {
+    try {
+      const res = await fetch("/api/share-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId }),
+      });
 
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err);
+      }
+
+      const data = await res.json();
+      await navigator.clipboard.writeText(data.share_url);
+      alert("Share link copied to clipboard");
+    
+    } catch (err) {
+      console.error(err);
+      alert("Failed to generate share link");
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background/80 to-secondary/40">
       <Navbar />
