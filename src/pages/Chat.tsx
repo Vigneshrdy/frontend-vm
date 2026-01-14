@@ -14,6 +14,7 @@ import {
   UploadCloud,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { API_BASE } from "@/lib/api";
 
 interface Message {
   id: string;
@@ -95,7 +96,7 @@ const Chat = () => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const res = await fetch(`/api/upload?session_id=${sessionId}`, {
+        const res = await fetch(`${API_BASE}/api/upload?session_id=${sessionId}`, {
   method: "POST",
   body: formData,
 });
@@ -124,7 +125,7 @@ const result = await res.json();
     ]);
 
     try {
-      const endpoint = hasDocument ? "/api/ask-document" : "/api/ask";
+      const endpoint = hasDocument? `${API_BASE}/api/ask-document`: `${API_BASE}/api/ask`;
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -162,7 +163,7 @@ const result = await res.json();
   };
   const handleShare = async () => {
     try {
-      const res = await fetch("/api/share-chat", {
+      const res = await fetch(`${API_BASE}/api/share-chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId }),
