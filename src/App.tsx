@@ -11,6 +11,7 @@ import Auth from "./pages/Auth";
 import Team from "./pages/Team";
 import HelmetReveal from "./pages/HelmetReveal";
 import NotFound from "./pages/NotFound";
+import SharedChat from "./pages/SharedChat";
 
 const queryClient = new QueryClient();
 
