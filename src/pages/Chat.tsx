@@ -42,6 +42,23 @@ const quickPrompts = [
   "What happens after an FIR is filed in India?",
   "Summarize this judgment and list action items",
 ];
+const handleShare = async () => {
+  const res = await fetch("/api/share-chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ session_id: sessionId }),
+  });
+
+  if (!res.ok) {
+    alert("Failed to generate share link");
+    return;
+  }
+
+  const data = await res.json();
+  await navigator.clipboard.writeText(data.share_url);
+
+  alert("Share link copied to clipboard");
+};
 
 const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([starterMessage]);
@@ -199,6 +216,13 @@ const result = await res.json();
                 <div className="flex items-center justify-between px-4 md:px-6 py-3 border-b border-border/70 bg-muted/40">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <MessageCircle className="w-4 h-4" />
+                    <Button
+                    variant="outline"
+                      size="sm"
+                    onClick={handleShare}
+                    >
+                  🔗 Share
+                    </Button>
                     <span>Conversation</span>
                   </div>
                   <div className="text-xs text-muted-foreground">Context: {hasDocument ? "document + chat" : "chat only"}</div>
