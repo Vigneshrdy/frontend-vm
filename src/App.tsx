@@ -28,6 +28,7 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/team" element={<Team />} />
           <Route path="/helmet" element={<HelmetReveal />} />
+          <Route path="/share/:shareId" element={<SharedChat />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
